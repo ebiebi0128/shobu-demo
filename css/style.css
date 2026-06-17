@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap');
 /* =============================================================
    翔舞技建 リニューアル提案デモ  共通スタイル
    配色 : 白 / オフホワイト / インク(黒) / グレー + アクセント(オレンジ)
@@ -17,13 +18,14 @@
   --c-gray:    #5c5e62;   /* 本文グレー */
   --c-gray-2:  #8a8c90;   /* 補助テキスト */
   --c-line:    #e3e1dd;   /* 罫線 */
-  --c-accent:  #06c755;   /* アクセント：グリーン（参考サイト寄せ） */
-  --c-accent-d:#058a44;   /* アクセント濃（hover） */
-  --c-line-acc:#dff8e8;   /* アクセント薄 */
+  --c-accent:  #123a6b;   /* アクセント：ネイビーブルー（落ち着いた印象） */
+  --c-accent-d:#0a2b54;   /* アクセント濃（hover） */
+  --c-line-acc:#e7eefc;   /* アクセント薄 */
 
   /* タイポ */
-  --font-base: "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+  --font-base: 'Noto Sans JP', "Hiragino Kaku Gothic ProN", "Hiragino Sans",
                "BIZ UDPGothic", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  --font-heading: 'Noto Sans JP', "Hiragino Kaku Gothic ProN", sans-serif;
   --font-en:   "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
 
   /* レイアウト */
@@ -58,7 +60,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 a { color: inherit; text-decoration: none; transition: color 0.2s ease; }
 
-h1, h2, h3, h4 { line-height: 1.4; margin: 0; font-weight: 700; }
+h1, h2, h3, h4 { font-family: var(--font-heading); line-height: 1.4; margin: 0; font-weight: 700; }
 
 p { margin: 0; }
 
@@ -330,13 +332,14 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   object-fit: cover;
   z-index: -2;
 }
-.hero::after { /* 暗幕オーバーレイ（色味を参考サイト寄せのグリーン系に調整） */
+.hero::after { /* 暗幕オーバーレイ（ネイビーブルー基調・可読性向上） */
   content: "";
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(6,40,30,0.80) 0%, rgba(6,40,30,0.44) 55%, rgba(6,40,30,0.18) 100%);
+  /* 少し濃くして文字とのコントラストを上げる */
+  background: linear-gradient(90deg, rgba(18,58,107,0.86) 0%, rgba(18,58,107,0.62) 55%, rgba(18,58,107,0.30) 100%);
   z-index: -1;
 }
-.hero__inner { padding-block: 60px; max-width: 720px; }
+.hero__inner { padding-block: 60px; max-width: 880px; }
 .hero__eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--font-en);
@@ -345,14 +348,22 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
 }
 .hero__eyebrow::before { content: ""; width: 26px; height: 3px; background: var(--c-accent); }
 .hero__title {
-  font-size: clamp(1.7rem, 1.1rem + 3.2vw, 3.1rem);
-  line-height: 1.35;
-  letter-spacing: 0.03em;
+  color: #ffffff;
+  font-size: clamp(1.6rem, 1.05rem + 2.6vw, 2.6rem); /* 上限を下げて極端な拡大を抑制 */
+  line-height: 1.18;
+  letter-spacing: 0.02em;
   margin-bottom: 20px;
+  max-width: min(880px, 88%); /* 横幅を制限して改行バランスを整える */
+  text-shadow: 0 8px 22px rgba(0,0,0,0.6); /* 背景画像と分離するための影 */
+  word-break: keep-all; /* 日本語の不自然な途中改行を抑える */
 }
 .hero__title .accent { color: var(--c-accent); }
 .hero__sub { font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem); color: #e6e6e6; margin-bottom: 32px; max-width: 560px; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* ヒーロー上のアクセント文字は背景が濃いため白系で上書きして可読性を確保 */
+.hero .accent { color: rgba(255,255,255,0.96); text-shadow: 0 6px 18px rgba(0,0,0,0.55); }
+.hero__eyebrow { color: rgba(255,255,255,0.9); }
 
 /* 下部の地域バッジ */
 .hero__badge {
@@ -367,6 +378,21 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   z-index: 1;
   box-shadow: var(--shadow);
 }
+
+/* ヒーロー内のボタン（アウトライン等）が背景と近い色で見づらいため上書き */
+.hero__actions .btn { z-index: 2; }
+.hero .btn--line {
+  color: rgba(255,255,255,0.95);
+  border-color: rgba(255,255,255,0.32);
+  background: transparent;
+}
+.hero .btn--line:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.72);
+  color: #fff;
+}
+.hero .btn--ghost-light { color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.6); }
+.hero .btn--primary { box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
 .hero__badge strong { display: block; font-size: 1.1rem; letter-spacing: 0.06em; }
 .hero__badge span { font-size: 0.72rem; letter-spacing: 0.1em; }
 
@@ -395,9 +421,32 @@ textarea:focus-visible, select:focus-visible, summary:focus-visible {
   background: var(--c-paper);
   border-bottom: 1px solid var(--c-line);
   font-size: 0.8rem;
+  -webkit-overflow-scrolling: touch;
 }
-.breadcrumb ol { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-block: 12px; color: var(--c-gray); }
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap; /* allow wrapping on narrow screens */
+  gap: 8px;
+  align-items: center;
+  padding-block: 12px;
+  color: var(--c-gray);
+}
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+.breadcrumb a {
+  display: inline-block;
+  padding: 6px 4px; /* larger touch target */
+}
 .breadcrumb li::after { content: "›"; margin-left: 8px; color: var(--c-gray-2); }
+.breadcrumb li:last-child::after { content: none; }
+
+/* Small screen tweaks */
+@media (max-width: 520px) {
+  .breadcrumb ol { gap: 6px; font-size: 0.78rem; }
+}
 .breadcrumb li:last-child::after { content: ""; }
 .breadcrumb a:hover { color: var(--c-accent); }
 .breadcrumb [aria-current="page"] { color: var(--c-ink); font-weight: 700; }
